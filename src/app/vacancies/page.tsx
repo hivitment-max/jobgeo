@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Briefcase, Bell } from 'lucide-react';
-import SearchBar from '@/components/SearchBar';
+import { Briefcase, Bell, Search } from 'lucide-react';
 import FeaturedJobCard from '@/components/FeaturedJobCard';
 import RecommendedJobCard from '@/components/RecommendedJobCard';
 import BottomNav from '@/components/BottomNav';
@@ -14,7 +13,6 @@ export default function VacanciesPage() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    // Telegram-ის ინიციალიზაცია
     if (typeof window !== 'undefined') {
       const tg = window.Telegram?.WebApp;
       if (tg) {
@@ -44,30 +42,42 @@ export default function VacanciesPage() {
           paddingTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 16px)'
         }}
       >
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold text-gray-900 leading-tight">
-              იპოვე შენი<br />სამუშაო
-            </h1>
+        {/* ზედა ხაზი: ლოგო + სახელი + Search + Profile */}
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
+              <Briefcase className="w-5 h-5 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">JOBSNAP</h1>
           </div>
+          
           <div className="flex items-center gap-3">
+            {/* Search ღილაკი */}
             <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-              <Bell className="w-5 h-5 text-gray-700" />
+              <Search className="w-5 h-5 text-gray-700" />
             </button>
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
+            
+            {/* Profile ზარით */}
+            <button className="relative w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
               <span className="text-white font-bold text-sm">
                 {user?.firstName?.charAt(0) || 'J'}
               </span>
-            </div>
+              {/* ზარი მარჯვენა ზედა კუთხეში */}
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
+                <span className="text-white text-xs font-bold">3</span>
+              </div>
+            </button>
           </div>
         </div>
 
-        {/* Search */}
-        <SearchBar />
+        {/* სლოგანი */}
+        <p className="text-sm text-gray-500 mb-4">
+          იპოვე შენი იდეალური სამუშაო
+        </p>
       </div>
 
       {/* Featured Jobs */}
-      <div className="px-6 mt-6">
+      <div className="px-6 mt-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-gray-900">რჩეული ვაკანსიები</h2>
           <button className="text-sm text-emerald-500 font-medium">
