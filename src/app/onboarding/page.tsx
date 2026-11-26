@@ -92,19 +92,21 @@ export default function OnboardingPage() {
 
   return (
     <div className="h-screen bg-white flex flex-col relative overflow-hidden">
-      {/* ლოგო - Telegram-ის ღილაკებს შორის ცენტრში */}
+      {/* ლოგოს ბანერი - Close ღილაკის სტილი + მცირე gap */}
       <div 
-        className="fixed z-40 flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm"
+        className="fixed z-40 flex items-center gap-1.5 rounded-full"
         style={{ 
           top: 'calc(var(--tg-safe-area-inset-top, 0px) + 8px)',
-          left: '50%',
-          transform: 'translateX(-50%)'
+          left: 'calc(96px + var(--tg-safe-area-inset-left, 0px))',
+          height: '36px',
+          padding: '0 10px',
+          backgroundColor: '#E8E8E8'
         }}
       >
-        <div className="w-7 h-7 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
-          <Briefcase className="w-4 h-4 text-white" />
+        <div className="w-5 h-5 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-md flex items-center justify-center">
+          <Briefcase className="w-3 h-3 text-white" />
         </div>
-        <span className="text-base font-bold text-gray-900">JOBSNAP</span>
+        <span className="text-sm font-bold text-gray-900">JOBSNAP</span>
       </div>
 
       {/* ფოტო - კომპაქტური */}
@@ -131,7 +133,7 @@ export default function OnboardingPage() {
         </AnimatePresence>
       </div>
 
-      {/* Frosted Glass ბანერი - flex-1 რომ შეავსოს დარჩენილი ადგილი */}
+      {/* Frosted Glass ბანერი */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 pb-6 bg-white/95 backdrop-blur-2xl border-t border-gray-200/50">
         {/* პროგრესის წერტილები */}
         <div className="flex gap-2 mb-4">
