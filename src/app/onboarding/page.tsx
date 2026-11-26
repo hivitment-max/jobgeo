@@ -39,7 +39,6 @@ export default function OnboardingPage() {
   const slide = slides[current];
   const isLast = current === slides.length - 1;
 
-  // Telegram-ის ინიციალიზაცია + Fullscreen
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
@@ -92,13 +91,13 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col relative overflow-hidden">
-      {/* ზედა ნაწილი - მხოლოდ ლოგო (Telegram UI-ს ქვემოთ) */}
+    <div className="h-screen bg-white flex flex-col relative overflow-hidden">
+      {/* ზედა ნაწილი - ლოგო */}
       <div 
-        className="absolute top-0 left-0 right-0 z-30 flex items-center justify-start px-6 bg-white/80 backdrop-blur-sm"
+        className="flex-shrink-0 flex items-center justify-start px-6 bg-white/80 backdrop-blur-sm"
         style={{ 
           paddingTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 16px)',
-          paddingBottom: '16px'
+          paddingBottom: '12px'
         }}
       >
         <div className="flex items-center gap-2">
@@ -109,14 +108,8 @@ export default function OnboardingPage() {
         </div>
       </div>
 
-      {/* ფოტო - უფრო ქვემოთ */}
-      <div 
-        className="relative flex-shrink-0 flex items-center justify-center"
-        style={{ 
-          height: '40vh',
-          marginTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 72px)'
-        }}
-      >
+      {/* ფოტო - კომპაქტური */}
+      <div className="flex-shrink-0 flex items-center justify-center py-4">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -124,79 +117,75 @@ export default function OnboardingPage() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="w-full h-full flex items-center justify-center"
+            className="flex items-center justify-center"
           >
             <img
               src={slide.image}
               alt={`Onboarding ${current + 1}`}
-              className="max-h-full max-w-full object-contain"
-              style={{ maxHeight: '240px' }}
+              className="object-contain"
+              style={{ maxHeight: '200px', width: 'auto' }}
             />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Frosted Glass ბანერი */}
-      <div className="relative flex-1 min-h-[40vh] bg-gradient-to-t from-white via-white/95 to-white/90">
-        <div className="absolute inset-0 bg-white/95 backdrop-blur-2xl border-t border-gray-200/50" />
-
-        <div className="relative h-full flex flex-col items-center justify-center px-6 pb-8">
-          {/* პროგრესის წერტილები */}
-          <div className="flex gap-2 mb-6">
-            {slides.map((_, i) => (
-              <motion.div
-                key={i}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === current ? 'bg-emerald-500' : 'bg-gray-300'
-                }`}
-                animate={{ width: i === current ? 32 : 6 }}
-                transition={{ duration: 0.3 }}
-              />
-            ))}
-          </div>
-
-          {/* სათაური */}
-          <AnimatePresence mode="wait">
-            <motion.h1
-              key={current}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+      {/* Frosted Glass ბანერი - flex-1 რომ შეავსოს დარჩენილი ადგილი */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-6 bg-white/95 backdrop-blur-2xl border-t border-gray-200/50">
+        {/* პროგრესის წერტილები */}
+        <div className="flex gap-2 mb-4">
+          {slides.map((_, i) => (
+            <motion.div
+              key={i}
+              className={`h-1.5 rounded-full transition-all ${
+                i === current ? 'bg-emerald-500' : 'bg-gray-300'
+              }`}
+              animate={{ width: i === current ? 32 : 6 }}
               transition={{ duration: 0.3 }}
-              className="text-4xl font-bold text-center text-gray-900 mb-4 leading-tight"
-            >
-              {slide.title && <span>{slide.title} </span>}
-              {slide.highlight && (
-                <span className="bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
-                  {slide.highlight}
-                </span>
-              )}
-              {slide.titleEnd && <span> {slide.titleEnd}</span>}
-            </motion.h1>
-          </AnimatePresence>
-
-          {/* აღწერა */}
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={current}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="text-lg text-center text-gray-600 mb-8 max-w-sm leading-relaxed px-4"
-            >
-              {slide.description}
-            </motion.p>
-          </AnimatePresence>
-
-          {/* მხოლოდ ერთი დიდი ღილაკი */}
-          <button
-            onClick={handleNext}
-            className="w-full max-w-sm bg-gray-900 text-white rounded-2xl py-4 font-semibold text-base hover:bg-gray-800 transition-colors active:scale-95"
-          >
-            {isLast ? 'დაწყება' : 'შემდეგი'}
-          </button>
+            />
+          ))}
         </div>
+
+        {/* სათაური */}
+        <AnimatePresence mode="wait">
+          <motion.h1
+            key={current}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="text-3xl font-bold text-center text-gray-900 mb-3 leading-tight"
+          >
+            {slide.title && <span>{slide.title} </span>}
+            {slide.highlight && (
+              <span className="bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
+                {slide.highlight}
+              </span>
+            )}
+            {slide.titleEnd && <span> {slide.titleEnd}</span>}
+          </motion.h1>
+        </AnimatePresence>
+
+        {/* აღწერა */}
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={current}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="text-base text-center text-gray-600 mb-6 max-w-sm leading-relaxed px-4"
+          >
+            {slide.description}
+          </motion.p>
+        </AnimatePresence>
+
+        {/* ღილაკი */}
+        <button
+          onClick={handleNext}
+          className="w-full max-w-sm bg-gray-900 text-white rounded-2xl py-4 font-semibold text-base hover:bg-gray-800 transition-colors active:scale-95"
+        >
+          {isLast ? 'დაწყება' : 'შემდეგი'}
+        </button>
       </div>
     </div>
   );
