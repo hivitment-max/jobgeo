@@ -84,7 +84,7 @@ export default function OnboardingPage() {
 
     if (isLast) {
       localStorage.setItem('jobsnap_onboarding_completed', 'true');
-      router.push('/profile');
+      router.push('/vacancies');
     } else {
       setCurrent(current + 1);
     }

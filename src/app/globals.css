@@ -8,6 +8,15 @@
   --tg-safe-area-inset-right: env(safe-area-inset-right);
   --tg-content-safe-area-inset-top: env(safe-area-inset-top);
   --tg-content-safe-area-inset-bottom: env(safe-area-inset-bottom);
+  
+  /* Telegram theme colors */
+  --tg-theme-bg-color: #ffffff;
+  --tg-theme-text-color: #111827;
+  --tg-theme-hint-color: #6B7280;
+  --tg-theme-link-color: #10B981;
+  --tg-theme-button-color: #1F2937;
+  --tg-theme-button-text-color: #ffffff;
+  --tg-theme-secondary-bg-color: #F3F4F6;
 }
 
 html, body {
@@ -63,4 +72,43 @@ button {
 /* Telegram header-ის სიმაღლის კომპენსაცია */
 .telegram-header-offset {
   margin-top: calc(var(--tg-content-safe-area-inset-top, 0px) + 44px);
+}
+
+/* Horizontal scroll-ის scrollbar-ის დამალვა */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color - JOBSNAP ბრენდის ფერი */
+::selection {
+  background: #10B981;
+  color: white;
+}
+
+/* Focus outline - accessibility */
+*:focus-visible {
+  outline: 2px solid #10B981;
+  outline-offset: 2px;
+}
+
+/* Image rendering */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* Prevent text selection on buttons */
+button, a {
+  user-select: none;
+  -webkit-user-select: none;
 }
