@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Briefcase, Zap, Shield } from 'lucide-react';
+import { Briefcase, Zap, Shield } from 'lucide-react';
 
 const slides = [
   {
@@ -93,10 +93,13 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col relative overflow-hidden">
-      {/* ზედა ნაწილი - მხოლოდ ლოგო (Safe Area-ით) */}
+      {/* ზედა ნაწილი - მხოლოდ ლოგო (Telegram UI-ს ქვემოთ) */}
       <div 
-        className="absolute top-0 left-0 right-0 z-30 flex items-center justify-start px-6 py-4 bg-white/80 backdrop-blur-sm"
-        style={{ paddingTop: 'calc(var(--tg-content-safe-area-inset-top, 0px) + 16px)' }}
+        className="absolute top-0 left-0 right-0 z-30 flex items-center justify-start px-6 bg-white/80 backdrop-blur-sm"
+        style={{ 
+          paddingTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 16px)',
+          paddingBottom: '16px'
+        }}
       >
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
@@ -106,8 +109,14 @@ export default function OnboardingPage() {
         </div>
       </div>
 
-      {/* ფოტო - შეზღუდული ზომა */}
-      <div className="relative flex-shrink-0 h-[45vh] flex items-center justify-center pt-16">
+      {/* ფოტო - უფრო ქვემოთ */}
+      <div 
+        className="relative flex-shrink-0 flex items-center justify-center"
+        style={{ 
+          height: '40vh',
+          marginTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 72px)'
+        }}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -121,14 +130,14 @@ export default function OnboardingPage() {
               src={slide.image}
               alt={`Onboarding ${current + 1}`}
               className="max-h-full max-w-full object-contain"
-              style={{ maxHeight: '280px' }}
+              style={{ maxHeight: '240px' }}
             />
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/* Frosted Glass ბანერი */}
-      <div className="relative flex-1 min-h-[45vh] bg-gradient-to-t from-white via-white/95 to-white/90">
+      <div className="relative flex-1 min-h-[40vh] bg-gradient-to-t from-white via-white/95 to-white/90">
         <div className="absolute inset-0 bg-white/95 backdrop-blur-2xl border-t border-gray-200/50" />
 
         <div className="relative h-full flex flex-col items-center justify-center px-6 pb-8">
@@ -180,21 +189,13 @@ export default function OnboardingPage() {
             </motion.p>
           </AnimatePresence>
 
-          {/* ღილაკები */}
-          <div className="flex items-center gap-3 w-full max-w-sm px-4">
-            <button
-              onClick={handleNext}
-              className="flex-1 bg-gray-900 text-white rounded-2xl py-4 font-semibold text-base hover:bg-gray-800 transition-colors active:scale-95"
-            >
-              {isLast ? 'დაწყება' : 'შემდეგი'}
-            </button>
-            <button
-              onClick={handleNext}
-              className="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors active:scale-95 flex-shrink-0"
-            >
-              <ArrowRight className="w-5 h-5 text-white" />
-            </button>
-          </div>
+          {/* მხოლოდ ერთი დიდი ღილაკი */}
+          <button
+            onClick={handleNext}
+            className="w-full max-w-sm bg-gray-900 text-white rounded-2xl py-4 font-semibold text-base hover:bg-gray-800 transition-colors active:scale-95"
+          >
+            {isLast ? 'დაწყება' : 'შემდეგი'}
+          </button>
         </div>
       </div>
     </div>
