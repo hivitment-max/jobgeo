@@ -1,4 +1,11 @@
-import { WebApp } from '@twa-dev/sdk';
+// Telegram SDK-ის დინამიური იმპორტი (SSR-ის თავიდან ასაცილებლად)
+let WebApp: any = null;
+
+if (typeof window !== 'undefined') {
+  // მხოლოდ ბრაუზერში ჩაიტვირთება
+  const sdk = require('@twa-dev/sdk');
+  WebApp = sdk.WebApp;
+}
 
 export interface TelegramUser {
   id: number;
@@ -9,21 +16,18 @@ export interface TelegramUser {
 }
 
 export function initTelegram() {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === 'undefined' || !WebApp) return null;
   
   // Fullscreen კონფიგურაცია
   WebApp.ready();
   WebApp.expand();
   
-  // Header და Background თეთრად გავხადოთ (როგორც ჩვენი დიზაინი)
-  WebApp.setHeaderColor('#ffffff');
-  WebApp.setBackgroundColor('#ffffff');
-  
-  // Safe area insets გამოვიყენოთ
-  if ('setParams' in WebApp) {
-    (WebApp as any).setParams({
-      is_fullscreen: true,
-    });
+  // Header და Background თეთრად
+  try {
+    WebApp.setHeaderColor('#ffffff');
+    WebApp.setBackgroundColor('#ffffff');
+  } catch (e) {
+    // ზოგიერთ ვერსიაში ეს მეთოდები არ არის
   }
   
   const user = WebApp.initDataUnsafe?.user;
@@ -40,25 +44,36 @@ export function initTelegram() {
 }
 
 export function hideTelegramButton() {
+  if (!WebApp) return;
   WebApp.MainButton.hide();
 }
 
 export function showTelegramButton(text: string, onClick: () => void) {
+  if (!WebApp) return;
   WebApp.MainButton.setText(text);
   WebApp.MainButton.show();
   WebApp.MainButton.onClick(onClick);
 }
 
 export function closeTelegramApp() {
+  if (!WebApp) return;
   WebApp.close();
 }
 
 export function isTelegramAvailable(): boolean {
-  return typeof window !== 'undefined' && WebApp.initData !== '';
+  if (typeof window === 'undefined') return false;
+  try {
+    return WebApp?.initData !== '';
+  } catch {
+    return false;
+  }
 }
 
 export function hapticFeedback(type: 'light' | 'medium' | 'heavy' = 'light') {
-  if ('HapticFeedback' in WebApp) {
-    (WebApp as any).HapticFeedback.impactOccurred(type);
+  if (!WebApp) return;
+  try {
+    WebApp.HapticFeedback.impactOccurred(type);
+  } catch (e) {
+    // HapticFeedback ყოველთვის არ არის ხელმისაწვდომი
   }
 }
