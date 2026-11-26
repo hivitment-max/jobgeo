@@ -9,6 +9,7 @@ html, body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: none;
+  position: fixed;
 }
 
 /* Safe area insets (iPhone notch, Android status bar) */
@@ -35,8 +36,16 @@ body {
 /* Smooth scrolling */
 * {
   -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
 }
 
 button {
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fullscreen container */
+.min-h-screen {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
 }

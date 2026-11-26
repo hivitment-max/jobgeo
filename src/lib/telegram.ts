@@ -2,9 +2,12 @@
 let WebApp: any = null;
 
 if (typeof window !== 'undefined') {
-  // მხოლოდ ბრაუზერში ჩაიტვირთება
-  const sdk = require('@twa-dev/sdk');
-  WebApp = sdk.WebApp;
+  try {
+    const sdk = require('@twa-dev/sdk');
+    WebApp = sdk.WebApp;
+  } catch (e) {
+    console.log('Telegram SDK not available:', e);
+  }
 }
 
 export interface TelegramUser {
@@ -19,15 +22,20 @@ export function initTelegram() {
   if (typeof window === 'undefined' || !WebApp) return null;
   
   // Fullscreen კონფიგურაცია
-  WebApp.ready();
-  WebApp.expand();
-  
-  // Header და Background თეთრად
   try {
+    WebApp.ready();
+    WebApp.expand(); // ეს არის მთავარი - აფართოებს აპს მთელ ეკრანზე
+    
+    // Header და Background თეთრად
     WebApp.setHeaderColor('#ffffff');
     WebApp.setBackgroundColor('#ffffff');
+    
+    // ვიბრაცია ჩართული
+    if (WebApp.HapticFeedback) {
+      WebApp.HapticFeedback.impactOccurred('light');
+    }
   } catch (e) {
-    // ზოგიერთ ვერსიაში ეს მეთოდები არ არის
+    console.log('Telegram init error:', e);
   }
   
   const user = WebApp.initDataUnsafe?.user;
@@ -72,7 +80,9 @@ export function isTelegramAvailable(): boolean {
 export function hapticFeedback(type: 'light' | 'medium' | 'heavy' = 'light') {
   if (!WebApp) return;
   try {
-    WebApp.HapticFeedback.impactOccurred(type);
+    if (WebApp.HapticFeedback) {
+      WebApp.HapticFeedback.impactOccurred(type);
+    }
   } catch (e) {
     // HapticFeedback ყოველთვის არ არის ხელმისაწვდომი
   }
