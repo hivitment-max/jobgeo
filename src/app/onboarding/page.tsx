@@ -92,27 +92,28 @@ export default function OnboardingPage() {
 
   return (
     <div className="h-screen bg-white flex flex-col relative overflow-hidden">
-      {/* ლოგოს ბანერი - Close ღილაკის სტილი + მცირე gap */}
+      {/* ლოგოს ბანერი - იდეალურად ცენტრში */}
       <div 
         className="fixed z-40 flex items-center gap-1.5 rounded-full"
         style={{ 
           top: 'calc(var(--tg-safe-area-inset-top, 0px) + 8px)',
-          left: 'calc(96px + var(--tg-safe-area-inset-left, 0px))',
+          left: '50%',
+          transform: 'translateX(-50%)',
           height: '36px',
-          padding: '0 10px',
+          padding: '0 14px',
           backgroundColor: '#E8E8E8'
         }}
       >
-        <div className="w-5 h-5 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-md flex items-center justify-center">
+        <div className="w-5 h-5 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-md flex items-center justify-center flex-shrink-0">
           <Briefcase className="w-3 h-3 text-white" />
         </div>
-        <span className="text-sm font-bold text-gray-900">JOBSNAP</span>
+        <span className="text-sm font-bold text-gray-900 whitespace-nowrap">JOBSNAP</span>
       </div>
 
-      {/* ფოტო - კომპაქტური */}
+      {/* ფოტო - გადიდებული */}
       <div 
         className="flex-shrink-0 flex items-center justify-center pt-16 pb-4"
-        style={{ marginTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 24px)' }}
+        style={{ marginTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 16px)' }}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -127,7 +128,7 @@ export default function OnboardingPage() {
               src={slide.image}
               alt={`Onboarding ${current + 1}`}
               className="object-contain"
-              style={{ maxHeight: '180px', width: 'auto' }}
+              style={{ maxHeight: '220px', width: 'auto' }}
             />
           </motion.div>
         </AnimatePresence>
