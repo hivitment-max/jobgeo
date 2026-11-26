@@ -107,7 +107,7 @@ export default function VacanciesPage() {
         </div>
       </div>
 
-      {/* Recommended Jobs */}
+      {/* Recommended Jobs - 3 ბანერი ერთ ხაზზე */}
       <div className="px-6 mt-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-gray-900">რეკომენდებული</h2>
@@ -116,9 +116,9 @@ export default function VacanciesPage() {
           </button>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-2 gap-4">
-          {recommendedJobs.map((job) => (
+        {/* 3-იანი Grid */}
+        <div className="grid grid-cols-3 gap-3">
+          {recommendedJobs.slice(0, 6).map((job) => (
             <button
               key={job.id}
               onClick={() => router.push(`/vacancies/${job.id}`)}

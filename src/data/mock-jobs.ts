@@ -1,65 +1,4 @@
-export interface Job {
-    id: string;
-    title: string;
-    company: string;
-    companyInitial: string;
-    companyColor: string;
-    city: string;
-    salary: string;
-    tags: { label: string; color: string }[];
-    featured?: boolean;
-    recommended?: boolean;
-  }
-  
-  export const featuredJobs: Job[] = [
-    {
-      id: '1',
-      title: 'Product Designer',
-      company: 'Google',
-      companyInitial: 'G',
-      companyColor: 'from-red-500 to-yellow-500',
-      city: 'თბილისი',
-      salary: '5000-8000 ₾',
-      tags: [
-        { label: 'დიზაინი', color: 'bg-white/20' },
-        { label: 'Full-Time', color: 'bg-white/20' },
-        { label: 'Junior', color: 'bg-white/20' },
-      ],
-      featured: true,
-    },
-    {
-      id: '2',
-      title: 'Frontend Developer',
-      company: 'Microsoft',
-      companyInitial: 'M',
-      companyColor: 'from-blue-500 to-cyan-500',
-      city: 'ბათუმი',
-      salary: '4000-7000 ₾',
-      tags: [
-        { label: 'IT', color: 'bg-white/20' },
-        { label: 'Full-Time', color: 'bg-white/20' },
-        { label: 'Middle', color: 'bg-white/20' },
-      ],
-      featured: true,
-    },
-    {
-      id: '3',
-      title: 'Marketing Manager',
-      company: 'Apple',
-      companyInitial: 'A',
-      companyColor: 'from-gray-700 to-gray-900',
-      city: 'თბილისი',
-      salary: '3500-6000 ₾',
-      tags: [
-        { label: 'მარკეტინგი', color: 'bg-white/20' },
-        { label: 'Full-Time', color: 'bg-white/20' },
-        { label: 'Senior', color: 'bg-white/20' },
-      ],
-      featured: true,
-    },
-  ];
-  
-  export const recommendedJobs: Job[] = [
+export const recommendedJobs: Job[] = [
     {
       id: '4',
       title: 'UX Designer',
@@ -101,6 +40,28 @@ export interface Job {
       companyColor: 'from-red-600 to-red-800',
       city: 'თბილისი',
       salary: '2000-3500 ₾',
+      tags: [],
+      recommended: true,
+    },
+    {
+      id: '8',
+      title: 'Product Manager',
+      company: 'Spotify',
+      companyInitial: 'S',
+      companyColor: 'from-green-500 to-green-700',
+      city: 'ბათუმი',
+      salary: '4500-7000 ₾',
+      tags: [],
+      recommended: true,
+    },
+    {
+      id: '9',
+      title: 'DevOps Engineer',
+      company: 'Netflix',
+      companyInitial: 'N',
+      companyColor: 'from-red-500 to-red-700',
+      city: 'თბილისი',
+      salary: '5000-8000 ₾',
       tags: [],
       recommended: true,
     },
