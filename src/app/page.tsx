@@ -1,22 +1,97 @@
-import Link from 'next/link';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Briefcase } from 'lucide-react';
 
 export default function Home() {
+  const router = useRouter();
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 4;
+      });
+    }, 60);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (progress === 100) {
+      setTimeout(() => {
+        router.push('/onboarding');
+      }, 300);
+    }
+  }, [progress, router]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-8">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold text-white mb-4">
-          🚀 JobGeo
-        </h1>
-        <p className="text-xl text-white/70 mb-8">
-          სამუშაოს მაძიებელი ბოტი საქართველოში
-        </p>
-        <Link
-          href="/test-supabase"
-          className="inline-block bg-white text-purple-900 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all"
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 px-8">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        className="mb-8"
+      >
+        <motion.div
+          className="w-28 h-28 rounded-3xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-2xl"
+          animate={{
+            boxShadow: [
+              '0 0 0 0 rgba(16, 185, 129, 0.4)',
+              '0 0 0 30px rgba(16, 185, 129, 0)',
+            ],
+          }}
+          transition={{ duration: 1.5, repeat: Infinity }}
         >
-          🧪 ტესტური გვერდი (ვაკანსიები)
-        </Link>
-      </div>
+          <Briefcase className="w-14 h-14 text-white" />
+        </motion.div>
+      </motion.div>
+
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="text-4xl font-bold text-white mb-2"
+      >
+        JobGeo
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="text-white/60 text-sm mb-12"
+      >
+        იპოვე შენი იდეალური სამუშაო
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, width: 0 }}
+        animate={{ opacity: 1, width: 240 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        className="w-60 h-1.5 bg-white/10 rounded-full overflow-hidden"
+      >
+        <motion.div
+          className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full"
+          style={{ width: `${progress}%` }}
+          transition={{ duration: 0.1 }}
+        />
+      </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.9 }}
+        className="text-white/40 text-xs mt-4"
+      >
+        {progress}%
+      </motion.p>
     </div>
   );
 }
