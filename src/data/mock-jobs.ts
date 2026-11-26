@@ -4,6 +4,7 @@ export interface Job {
     company: string;
     companyInitial: string;
     companyColor: string;
+    bgColor?: string;
     city: string;
     salary: string;
     tags: { label: string; color: string }[];
@@ -66,6 +67,7 @@ export interface Job {
       company: 'Dribbble',
       companyInitial: 'D',
       companyColor: 'from-pink-500 to-rose-500',
+      bgColor: 'bg-pink-100',
       city: 'ქუთაისი',
       salary: '2500-4000 ₾',
       tags: [],
@@ -77,6 +79,7 @@ export interface Job {
       company: 'Facebook',
       companyInitial: 'F',
       companyColor: 'from-blue-600 to-blue-800',
+      bgColor: 'bg-blue-100',
       city: 'თბილისი',
       salary: '6000-9000 ₾',
       tags: [],
@@ -88,6 +91,7 @@ export interface Job {
       company: 'Amazon',
       companyInitial: 'A',
       companyColor: 'from-orange-500 to-yellow-500',
+      bgColor: 'bg-orange-100',
       city: 'რუსთავი',
       salary: '3000-5000 ₾',
       tags: [],
@@ -99,6 +103,7 @@ export interface Job {
       company: 'Tesla',
       companyInitial: 'T',
       companyColor: 'from-red-600 to-red-800',
+      bgColor: 'bg-red-100',
       city: 'თბილისი',
       salary: '2000-3500 ₾',
       tags: [],
@@ -110,6 +115,7 @@ export interface Job {
       company: 'Spotify',
       companyInitial: 'S',
       companyColor: 'from-green-500 to-green-700',
+      bgColor: 'bg-green-100',
       city: 'ბათუმი',
       salary: '4500-7000 ₾',
       tags: [],
@@ -121,6 +127,7 @@ export interface Job {
       company: 'Netflix',
       companyInitial: 'N',
       companyColor: 'from-red-500 to-red-700',
+      bgColor: 'bg-purple-100',
       city: 'თბილისი',
       salary: '5000-8000 ₾',
       tags: [],
