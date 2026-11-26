@@ -91,34 +91,19 @@ export default function OnboardingPage() {
     }
   };
 
-  const handleSkip = () => {
-    if (typeof window !== 'undefined') {
-      const tg = window.Telegram?.WebApp;
-      if (tg?.HapticFeedback) {
-        try { tg.HapticFeedback.impactOccurred('light'); } catch (e) {}
-      }
-    }
-
-    localStorage.setItem('jobsnap_onboarding_completed', 'true');
-    router.push('/profile');
-  };
-
   return (
     <div className="min-h-screen bg-white flex flex-col relative overflow-hidden">
-      {/* ზედა ნაწილი - ლოგო + Skip */}
-      <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-sm">
+      {/* ზედა ნაწილი - მხოლოდ ლოგო (Safe Area-ით) */}
+      <div 
+        className="absolute top-0 left-0 right-0 z-30 flex items-center justify-start px-6 py-4 bg-white/80 backdrop-blur-sm"
+        style={{ paddingTop: 'calc(var(--tg-content-safe-area-inset-top, 0px) + 16px)' }}
+      >
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
             <Briefcase className="w-5 h-5 text-white" />
           </div>
           <span className="text-lg font-bold text-gray-900">JOBSNAP</span>
         </div>
-        <button
-          onClick={handleSkip}
-          className="text-gray-500 font-medium hover:text-gray-900 transition-colors text-sm"
-        >
-          გამოტოვება
-        </button>
       </div>
 
       {/* ფოტო - შეზღუდული ზომა */}
@@ -136,18 +121,16 @@ export default function OnboardingPage() {
               src={slide.image}
               alt={`Onboarding ${current + 1}`}
               className="max-h-full max-w-full object-contain"
-              style={{ maxHeight: '320px' }}
+              style={{ maxHeight: '280px' }}
             />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Frosted Glass ბანერი - გადიდებული */}
+      {/* Frosted Glass ბანერი */}
       <div className="relative flex-1 min-h-[45vh] bg-gradient-to-t from-white via-white/95 to-white/90">
-        {/* Frosted glass ეფექტი */}
         <div className="absolute inset-0 bg-white/95 backdrop-blur-2xl border-t border-gray-200/50" />
 
-        {/* კონტენტი */}
         <div className="relative h-full flex flex-col items-center justify-center px-6 pb-8">
           {/* პროგრესის წერტილები */}
           <div className="flex gap-2 mb-6">
@@ -163,7 +146,7 @@ export default function OnboardingPage() {
             ))}
           </div>
 
-          {/* სათაური - გადიდებული */}
+          {/* სათაური */}
           <AnimatePresence mode="wait">
             <motion.h1
               key={current}
@@ -183,7 +166,7 @@ export default function OnboardingPage() {
             </motion.h1>
           </AnimatePresence>
 
-          {/* აღწერა - გადიდებული */}
+          {/* აღწერა */}
           <AnimatePresence mode="wait">
             <motion.p
               key={current}
