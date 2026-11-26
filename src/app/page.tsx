@@ -4,18 +4,26 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Briefcase } from 'lucide-react';
-import { initTelegram, isTelegramAvailable } from '@/lib/telegram';
 
 export default function Home() {
   const router = useRouter();
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Telegram-ის ინიციალიზაცია (Fullscreen რეჟიმი)
-    if (isTelegramAvailable()) {
-      const user = initTelegram();
-      if (user) {
-        localStorage.setItem('jobsnap_telegram_user', JSON.stringify(user));
+    // Telegram-ის ინიციალიზაცია (მხოლოდ ბრაუზერში, SSR-ის თავიდან ასაცილებლად)
+    if (typeof window !== 'undefined') {
+      try {
+        const { initTelegram, isTelegramAvailable } = require('@/lib/telegram');
+        
+        if (isTelegramAvailable()) {
+          const user = initTelegram();
+          if (user) {
+            localStorage.setItem('jobsnap_telegram_user', JSON.stringify(user));
+          }
+        }
+      } catch (e) {
+        // Telegram SDK ხელმისაწვდომი არ არის (მაგ: ჩვეულებრივ ბრაუზერში)
+        console.log('Telegram not available:', e);
       }
     }
 

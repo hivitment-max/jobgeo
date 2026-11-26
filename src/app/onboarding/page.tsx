@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Briefcase, Zap, Shield } from 'lucide-react';
@@ -13,7 +13,6 @@ const slides = [
     highlight: 'იდეალური',
     titleEnd: 'სამუშაო',
     description: 'AI შეარჩევს ვაკანსიებს შენი უნარების და გამოცდილების მიხედვით',
-    gradient: 'from-emerald-500 to-cyan-500',
   },
   {
     image: '/onboarding/onboarding-2.png',
@@ -22,7 +21,6 @@ const slides = [
     highlight: '1 წამში',
     titleEnd: '',
     description: 'აღარ დაგჭირდება რეზიუმეს ხელახლა ატვირთვა — ერთი შეხებით',
-    gradient: 'from-emerald-500 to-cyan-500',
   },
   {
     image: '/onboarding/onboarding-3.png',
@@ -31,7 +29,6 @@ const slides = [
     highlight: 'გამჭვირვალე',
     titleEnd: 'და საიმედო',
     description: 'ყველა დამსაქმებელი ვერიფიცირებულია და შეფასებული სხვა კანდიდატებისგან',
-    gradient: 'from-emerald-500 to-cyan-500',
   },
 ];
 
@@ -43,9 +40,37 @@ export default function OnboardingPage() {
   const Icon = slide.icon;
   const isLast = current === slides.length - 1;
 
+  // Telegram-ის ინიციალიზაცია (მხოლოდ client-ზე)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const { initTelegram, isTelegramAvailable } = require('@/lib/telegram');
+        
+        if (isTelegramAvailable()) {
+          const user = initTelegram();
+          if (user) {
+            localStorage.setItem('jobsnap_telegram_user', JSON.stringify(user));
+          }
+        }
+      } catch (e) {
+        console.log('Telegram not available:', e);
+      }
+    }
+  }, []);
+
   const handleNext = () => {
+    // Haptic feedback (მხოლოდ Telegram-ში)
+    if (typeof window !== 'undefined') {
+      try {
+        const { hapticFeedback } = require('@/lib/telegram');
+        hapticFeedback('light');
+      } catch (e) {
+        // Haptic ხელმისაწვდომი არ არის
+      }
+    }
+
     if (isLast) {
-      localStorage.setItem('jobgeo_onboarding_completed', 'true');
+      localStorage.setItem('jobsnap_onboarding_completed', 'true');
       router.push('/profile');
     } else {
       setCurrent(current + 1);
@@ -53,19 +78,29 @@ export default function OnboardingPage() {
   };
 
   const handleSkip = () => {
-    localStorage.setItem('jobgeo_onboarding_completed', 'true');
+    // Haptic feedback
+    if (typeof window !== 'undefined') {
+      try {
+        const { hapticFeedback } = require('@/lib/telegram');
+        hapticFeedback('light');
+      } catch (e) {
+        // Haptic ხელმისაწვდომი არ არის
+      }
+    }
+
+    localStorage.setItem('jobsnap_onboarding_completed', 'true');
     router.push('/profile');
   };
 
   return (
     <div className="min-h-screen bg-white flex flex-col relative overflow-hidden">
       {/* ზედა ნაწილი - ლოგო + Skip */}
-      <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 pt-6">
+      <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 pt-6 safe-area-top">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
             <Briefcase className="w-5 h-5 text-white" />
           </div>
-          <span className="text-lg font-bold text-gray-900">JobGeo</span>
+          <span className="text-lg font-bold text-gray-900">JOBSNAP</span>
         </div>
         <button
           onClick={handleSkip}
@@ -98,10 +133,10 @@ export default function OnboardingPage() {
       {/* Frosted Glass ბანერი - ქვედა 40% */}
       <div className="relative h-[40vh]">
         {/* Frosted glass ეფექტი */}
-        <div className="absolute inset-0 bg-white/80 backdrop-blur-xl border-t border-white/50" />
+        <div className="absolute inset-0 bg-white/90 backdrop-blur-2xl border-t border-gray-200/50" />
 
         {/* კონტენტი */}
-        <div className="relative h-full flex flex-col items-center justify-center px-8 pt-6">
+        <div className="relative h-full flex flex-col items-center justify-center px-8 pt-6 safe-area-bottom">
           {/* პროგრესის წერტილები */}
           <div className="flex gap-2 mb-6">
             {slides.map((_, i) => (
@@ -154,13 +189,13 @@ export default function OnboardingPage() {
           <div className="flex items-center gap-3 w-full max-w-sm">
             <button
               onClick={handleNext}
-              className="flex-1 bg-gray-900 text-white rounded-2xl py-4 font-semibold text-base hover:bg-gray-800 transition-colors"
+              className="flex-1 bg-gray-900 text-white rounded-2xl py-4 font-semibold text-base hover:bg-gray-800 transition-colors active:scale-95"
             >
               {isLast ? 'დაწყება' : 'შემდეგი'}
             </button>
             <button
               onClick={handleNext}
-              className="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors"
+              className="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors active:scale-95"
             >
               <ArrowRight className="w-5 h-5 text-white" />
             </button>
