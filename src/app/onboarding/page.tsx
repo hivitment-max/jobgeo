@@ -46,11 +46,9 @@ export default function OnboardingPage() {
     const tg = window.Telegram?.WebApp;
     if (!tg) return;
     
-    // 1. ძირითადი ინიციალიზაცია
     tg.ready();
     tg.expand();
     
-    // 2. Fullscreen მხოლოდ Bot API 8.0+ და მობილურზე
     if (tg.isVersionAtLeast && tg.isVersionAtLeast('8.0')) {
       const platform = tg.platform?.toLowerCase() || '';
       if (['android', 'ios'].includes(platform)) {
@@ -62,11 +60,9 @@ export default function OnboardingPage() {
       }
     }
     
-    // 3. Header და Background
     tg.setHeaderColor('#ffffff');
     tg.setBackgroundColor('#ffffff');
     
-    // 4. User-ის შენახვა
     const user = tg.initDataUnsafe?.user;
     if (user) {
       localStorage.setItem('jobsnap_telegram_user', JSON.stringify({
@@ -109,8 +105,8 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col relative overflow-hidden">
-      {/* ზედა ნაწილი - ლოგო + Skip (Safe Area-ით) */}
-      <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 pt-6 safe-area-top">
+      {/* ზედა ნაწილი - ლოგო + Skip */}
+      <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-sm">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
             <Briefcase className="w-5 h-5 text-white" />
@@ -119,37 +115,40 @@ export default function OnboardingPage() {
         </div>
         <button
           onClick={handleSkip}
-          className="text-gray-500 font-medium hover:text-gray-900 transition-colors"
+          className="text-gray-500 font-medium hover:text-gray-900 transition-colors text-sm"
         >
           გამოტოვება
         </button>
       </div>
 
-      {/* ფოტო - ზედა 60% */}
-      <div className="relative flex-1 min-h-[60vh] pt-16">
+      {/* ფოტო - შეზღუდული ზომა */}
+      <div className="relative flex-shrink-0 h-[45vh] flex items-center justify-center pt-16">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="absolute inset-0 flex items-center justify-center"
+            className="w-full h-full flex items-center justify-center"
           >
             <img
               src={slide.image}
               alt={`Onboarding ${current + 1}`}
-              className="w-full h-full object-contain object-top"
+              className="max-h-full max-w-full object-contain"
+              style={{ maxHeight: '320px' }}
             />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Frosted Glass ბანერი - ქვედა 40% (Safe Area-ით) */}
-      <div className="relative h-[40vh]">
-        <div className="absolute inset-0 bg-white/90 backdrop-blur-2xl border-t border-gray-200/50" />
+      {/* Frosted Glass ბანერი - გადიდებული */}
+      <div className="relative flex-1 min-h-[45vh] bg-gradient-to-t from-white via-white/95 to-white/90">
+        {/* Frosted glass ეფექტი */}
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-2xl border-t border-gray-200/50" />
 
-        <div className="relative h-full flex flex-col items-center justify-center px-8 pt-6 safe-area-bottom">
+        {/* კონტენტი */}
+        <div className="relative h-full flex flex-col items-center justify-center px-6 pb-8">
           {/* პროგრესის წერტილები */}
           <div className="flex gap-2 mb-6">
             {slides.map((_, i) => (
@@ -164,7 +163,7 @@ export default function OnboardingPage() {
             ))}
           </div>
 
-          {/* სათაური */}
+          {/* სათაური - გადიდებული */}
           <AnimatePresence mode="wait">
             <motion.h1
               key={current}
@@ -172,7 +171,7 @@ export default function OnboardingPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="text-3xl font-bold text-center text-gray-900 mb-3"
+              className="text-4xl font-bold text-center text-gray-900 mb-4 leading-tight"
             >
               {slide.title && <span>{slide.title} </span>}
               {slide.highlight && (
@@ -184,7 +183,7 @@ export default function OnboardingPage() {
             </motion.h1>
           </AnimatePresence>
 
-          {/* აღწერა */}
+          {/* აღწერა - გადიდებული */}
           <AnimatePresence mode="wait">
             <motion.p
               key={current}
@@ -192,14 +191,14 @@ export default function OnboardingPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, delay: 0.1 }}
-              className="text-base text-center text-gray-500 mb-8 max-w-xs leading-relaxed"
+              className="text-lg text-center text-gray-600 mb-8 max-w-sm leading-relaxed px-4"
             >
               {slide.description}
             </motion.p>
           </AnimatePresence>
 
           {/* ღილაკები */}
-          <div className="flex items-center gap-3 w-full max-w-sm">
+          <div className="flex items-center gap-3 w-full max-w-sm px-4">
             <button
               onClick={handleNext}
               className="flex-1 bg-gray-900 text-white rounded-2xl py-4 font-semibold text-base hover:bg-gray-800 transition-colors active:scale-95"
@@ -208,7 +207,7 @@ export default function OnboardingPage() {
             </button>
             <button
               onClick={handleNext}
-              className="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors active:scale-95"
+              className="w-14 h-14 bg-gray-900 rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors active:scale-95 flex-shrink-0"
             >
               <ArrowRight className="w-5 h-5 text-white" />
             </button>
