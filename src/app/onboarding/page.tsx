@@ -37,35 +37,53 @@ export default function OnboardingPage() {
   const router = useRouter();
 
   const slide = slides[current];
-  const Icon = slide.icon;
   const isLast = current === slides.length - 1;
 
-  // Telegram-ის ინიციალიზაცია (მხოლოდ client-ზე)
+  // Telegram-ის ინიციალიზაცია + Fullscreen
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const { initTelegram, isTelegramAvailable } = require('@/lib/telegram');
-        
-        if (isTelegramAvailable()) {
-          const user = initTelegram();
-          if (user) {
-            localStorage.setItem('jobsnap_telegram_user', JSON.stringify(user));
-          }
+    if (typeof window === 'undefined') return;
+    
+    const tg = window.Telegram?.WebApp;
+    if (!tg) return;
+    
+    // 1. ძირითადი ინიციალიზაცია
+    tg.ready();
+    tg.expand();
+    
+    // 2. Fullscreen მხოლოდ Bot API 8.0+ და მობილურზე
+    if (tg.isVersionAtLeast && tg.isVersionAtLeast('8.0')) {
+      const platform = tg.platform?.toLowerCase() || '';
+      if (['android', 'ios'].includes(platform)) {
+        try {
+          tg.requestFullscreen();
+        } catch (e) {
+          console.log('requestFullscreen failed:', e);
         }
-      } catch (e) {
-        console.log('Telegram not available:', e);
       }
+    }
+    
+    // 3. Header და Background
+    tg.setHeaderColor('#ffffff');
+    tg.setBackgroundColor('#ffffff');
+    
+    // 4. User-ის შენახვა
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+      localStorage.setItem('jobsnap_telegram_user', JSON.stringify({
+        id: user.id,
+        username: user.username,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        languageCode: user.language_code || 'ka',
+      }));
     }
   }, []);
 
   const handleNext = () => {
-    // Haptic feedback (მხოლოდ Telegram-ში)
     if (typeof window !== 'undefined') {
-      try {
-        const { hapticFeedback } = require('@/lib/telegram');
-        hapticFeedback('light');
-      } catch (e) {
-        // Haptic ხელმისაწვდომი არ არის
+      const tg = window.Telegram?.WebApp;
+      if (tg?.HapticFeedback) {
+        try { tg.HapticFeedback.impactOccurred('light'); } catch (e) {}
       }
     }
 
@@ -78,13 +96,10 @@ export default function OnboardingPage() {
   };
 
   const handleSkip = () => {
-    // Haptic feedback
     if (typeof window !== 'undefined') {
-      try {
-        const { hapticFeedback } = require('@/lib/telegram');
-        hapticFeedback('light');
-      } catch (e) {
-        // Haptic ხელმისაწვდომი არ არის
+      const tg = window.Telegram?.WebApp;
+      if (tg?.HapticFeedback) {
+        try { tg.HapticFeedback.impactOccurred('light'); } catch (e) {}
       }
     }
 
@@ -94,7 +109,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col relative overflow-hidden">
-      {/* ზედა ნაწილი - ლოგო + Skip */}
+      {/* ზედა ნაწილი - ლოგო + Skip (Safe Area-ით) */}
       <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 pt-6 safe-area-top">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
@@ -111,7 +126,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* ფოტო - ზედა 60% */}
-      <div className="relative flex-1 min-h-[60vh]">
+      <div className="relative flex-1 min-h-[60vh] pt-16">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -130,12 +145,10 @@ export default function OnboardingPage() {
         </AnimatePresence>
       </div>
 
-      {/* Frosted Glass ბანერი - ქვედა 40% */}
+      {/* Frosted Glass ბანერი - ქვედა 40% (Safe Area-ით) */}
       <div className="relative h-[40vh]">
-        {/* Frosted glass ეფექტი */}
         <div className="absolute inset-0 bg-white/90 backdrop-blur-2xl border-t border-gray-200/50" />
 
-        {/* კონტენტი */}
         <div className="relative h-full flex flex-col items-center justify-center px-8 pt-6 safe-area-bottom">
           {/* პროგრესის წერტილები */}
           <div className="flex gap-2 mb-6">

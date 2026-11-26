@@ -1,4 +1,3 @@
-// Telegram SDK-ის დინამიური იმპორტი (SSR-ის თავიდან ასაცილებლად)
 let WebApp: any = null;
 
 if (typeof window !== 'undefined') {
@@ -21,16 +20,38 @@ export interface TelegramUser {
 export function initTelegram() {
   if (typeof window === 'undefined' || !WebApp) return null;
   
-  // Fullscreen კონფიგურაცია
   try {
+    // 1. ძირითადი ინიციალიზაცია
     WebApp.ready();
-    WebApp.expand(); // ეს არის მთავარი - აფართოებს აპს მთელ ეკრანზე
+    WebApp.expand(); // fallback - სრული სიმაღლე
     
-    // Header და Background თეთრად
+    // 2. Fullscreen მხოლოდ Bot API 8.0+ და მობილურზე
+    if (WebApp.isVersionAtLeast && WebApp.isVersionAtLeast('8.0')) {
+      const platform = WebApp.platform?.toLowerCase() || '';
+      if (['android', 'ios'].includes(platform)) {
+        try {
+          WebApp.requestFullscreen();
+          console.log('Fullscreen requested successfully');
+        } catch (e) {
+          console.log('requestFullscreen failed:', e);
+        }
+      }
+    }
+    
+    // 3. Fullscreen ივენთების მოსმენა
+    WebApp.onEvent('fullscreenChanged', () => {
+      console.log('isFullscreen:', WebApp.isFullscreen);
+    });
+    
+    WebApp.onEvent('fullscreenFailed', (e: any) => {
+      console.warn('Fullscreen failed:', e?.error);
+    });
+    
+    // 4. Header და Background ფერები
     WebApp.setHeaderColor('#ffffff');
     WebApp.setBackgroundColor('#ffffff');
     
-    // ვიბრაცია ჩართული
+    // 5. ვიბრაცია
     if (WebApp.HapticFeedback) {
       WebApp.HapticFeedback.impactOccurred('light');
     }
@@ -86,4 +107,35 @@ export function hapticFeedback(type: 'light' | 'medium' | 'heavy' = 'light') {
   } catch (e) {
     // HapticFeedback ყოველთვის არ არის ხელმისაწვდომი
   }
+}
+
+// ახალი ფუნქციები fullscreen მართვისთვის
+export function requestFullscreen() {
+  if (!WebApp) return;
+  try {
+    if (WebApp.isVersionAtLeast && WebApp.isVersionAtLeast('8.0')) {
+      const platform = WebApp.platform?.toLowerCase() || '';
+      if (['android', 'ios'].includes(platform)) {
+        WebApp.requestFullscreen();
+      }
+    }
+  } catch (e) {
+    console.log('requestFullscreen error:', e);
+  }
+}
+
+export function exitFullscreen() {
+  if (!WebApp) return;
+  try {
+    if (WebApp.isVersionAtLeast && WebApp.isVersionAtLeast('8.0')) {
+      WebApp.exitFullscreen();
+    }
+  } catch (e) {
+    console.log('exitFullscreen error:', e);
+  }
+}
+
+export function isFullscreen(): boolean {
+  if (!WebApp) return false;
+  return WebApp.isFullscreen === true;
 }

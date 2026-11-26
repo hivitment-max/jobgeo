@@ -23,11 +23,8 @@ export default function RootLayout({
   return (
     <html lang="ka">
       <head>
-        {/* Telegram Mini App-ისთვის აუცილებელი meta tags */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        {/* Telegram Web App Script - ყველა სხვა სკრიპტზე ადრე! */}
+        <script src="https://telegram.org/js/telegram-web-app.js" />
       </head>
       <body className="antialiased bg-white text-gray-900 overflow-x-hidden">
         {children}
