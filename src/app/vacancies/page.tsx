@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Briefcase, Bell, Search } from 'lucide-react';
+import { Zap, Search } from 'lucide-react';
 import FeaturedJobCard from '@/components/FeaturedJobCard';
 import RecommendedJobCard from '@/components/RecommendedJobCard';
 import BottomNav from '@/components/BottomNav';
@@ -45,34 +45,39 @@ export default function VacanciesPage() {
         {/* ზედა ხაზი: ლოგო + სახელი/სლოგანი + Search + Profile */}
         <div className="flex items-center justify-between">
           {/* ლოგო + ტექსტი - პროფილის წრის სიმაღლეზე (40px) */}
-          <div className="flex items-center gap-2">
-            {/* ლოგოს ხატულა - 40px */}
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center flex-shrink-0">
-              <Briefcase className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-2.5">
+            {/* ლოგოს ხატულა - 40px, მუქი gradient */}
+            <div className="w-10 h-10 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+              <Zap className="w-5 h-5 text-emerald-400" fill="currentColor" />
             </div>
             
             {/* სახელი + სლოგანი - 40px სიმაღლეზე */}
             <div className="flex flex-col justify-center h-10">
-              <span className="text-xl font-bold text-gray-900 leading-tight">JOBSNAP</span>
-              <span className="text-xs text-gray-500 leading-tight">იპოვე სამუშაო</span>
+              <div className="flex items-baseline leading-none">
+                <span className="text-xl font-black text-gray-900 tracking-tight">JOB</span>
+                <span className="text-xl font-light italic text-emerald-500 tracking-tight">SNAP</span>
+              </div>
+              <span className="text-[10px] text-gray-500 leading-tight mt-0.5 tracking-wide">
+                იპოვე სამუშაო
+              </span>
             </div>
           </div>
           
           {/* Search + Profile */}
           <div className="flex items-center gap-3">
             {/* Search ღილაკი */}
-            <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+            <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
               <Search className="w-5 h-5 text-gray-700" />
             </button>
             
             {/* Profile ზარით */}
-            <button className="relative w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
+            <button className="relative w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-md">
               <span className="text-white font-bold text-sm">
                 {user?.firstName?.charAt(0) || 'J'}
               </span>
               {/* ზარი მარჯვენა ზედა კუთხეში */}
               <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
-                <span className="text-white text-xs font-bold">3</span>
+                <span className="text-white text-[10px] font-bold">3</span>
               </div>
             </button>
           </div>
