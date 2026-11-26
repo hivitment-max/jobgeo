@@ -92,24 +92,26 @@ export default function OnboardingPage() {
 
   return (
     <div className="h-screen bg-white flex flex-col relative overflow-hidden">
-      {/* ზედა ნაწილი - ლოგო */}
+      {/* ლოგო - Telegram-ის ღილაკებს შორის ცენტრში */}
       <div 
-        className="flex-shrink-0 flex items-center justify-start px-6 bg-white/80 backdrop-blur-sm"
+        className="fixed z-40 flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm"
         style={{ 
-          paddingTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 16px)',
-          paddingBottom: '12px'
+          top: 'calc(var(--tg-safe-area-inset-top, 0px) + 8px)',
+          left: '50%',
+          transform: 'translateX(-50%)'
         }}
       >
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
-            <Briefcase className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-lg font-bold text-gray-900">JOBSNAP</span>
+        <div className="w-7 h-7 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
+          <Briefcase className="w-4 h-4 text-white" />
         </div>
+        <span className="text-base font-bold text-gray-900">JOBSNAP</span>
       </div>
 
       {/* ფოტო - კომპაქტური */}
-      <div className="flex-shrink-0 flex items-center justify-center py-4">
+      <div 
+        className="flex-shrink-0 flex items-center justify-center pt-16 pb-4"
+        style={{ marginTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 24px)' }}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -123,7 +125,7 @@ export default function OnboardingPage() {
               src={slide.image}
               alt={`Onboarding ${current + 1}`}
               className="object-contain"
-              style={{ maxHeight: '200px', width: 'auto' }}
+              style={{ maxHeight: '180px', width: 'auto' }}
             />
           </motion.div>
         </AnimatePresence>
