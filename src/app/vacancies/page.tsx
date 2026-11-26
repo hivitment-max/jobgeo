@@ -42,15 +42,23 @@ export default function VacanciesPage() {
           paddingTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 16px)'
         }}
       >
-        {/* ზედა ხაზი: ლოგო + სახელი + Search + Profile */}
-        <div className="flex items-center justify-between mb-2">
+        {/* ზედა ხაზი: ლოგო + სახელი/სლოგანი + Search + Profile */}
+        <div className="flex items-center justify-between">
+          {/* ლოგო + ტექსტი - პროფილის წრის სიმაღლეზე (40px) */}
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
-              <Briefcase className="w-5 h-5 text-white" />
+            {/* ლოგოს ხატულა - 40px */}
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Briefcase className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">JOBSNAP</h1>
+            
+            {/* სახელი + სლოგანი - 40px სიმაღლეზე */}
+            <div className="flex flex-col justify-center h-10">
+              <span className="text-xl font-bold text-gray-900 leading-tight">JOBSNAP</span>
+              <span className="text-xs text-gray-500 leading-tight">იპოვე სამუშაო</span>
+            </div>
           </div>
           
+          {/* Search + Profile */}
           <div className="flex items-center gap-3">
             {/* Search ღილაკი */}
             <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
@@ -69,15 +77,10 @@ export default function VacanciesPage() {
             </button>
           </div>
         </div>
-
-        {/* სლოგანი */}
-        <p className="text-sm text-gray-500 mb-4">
-          იპოვე შენი იდეალური სამუშაო
-        </p>
       </div>
 
       {/* Featured Jobs */}
-      <div className="px-6 mt-4">
+      <div className="px-6 mt-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-gray-900">რჩეული ვაკანსიები</h2>
           <button className="text-sm text-emerald-500 font-medium">
