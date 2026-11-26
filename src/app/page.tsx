@@ -4,12 +4,22 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Briefcase } from 'lucide-react';
+import { initTelegram, isTelegramAvailable } from '@/lib/telegram';
 
 export default function Home() {
   const router = useRouter();
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    // Telegram-ის ინიციალიზაცია (Fullscreen რეჟიმი)
+    if (isTelegramAvailable()) {
+      const user = initTelegram();
+      if (user) {
+        localStorage.setItem('jobsnap_telegram_user', JSON.stringify(user));
+      }
+    }
+
+    // პროგრესის ანიმაცია
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -33,6 +43,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 px-8">
+      {/* ლოგო */}
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -53,15 +64,17 @@ export default function Home() {
         </motion.div>
       </motion.div>
 
+      {/* სათაური */}
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
         className="text-4xl font-bold text-white mb-2"
       >
-        JobGeo
+        JOBSNAP
       </motion.h1>
 
+      {/* ქვესათაური */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -71,6 +84,7 @@ export default function Home() {
         იპოვე შენი იდეალური სამუშაო
       </motion.p>
 
+      {/* პროგრესის ზოლი */}
       <motion.div
         initial={{ opacity: 0, width: 0 }}
         animate={{ opacity: 1, width: 240 }}
@@ -84,6 +98,7 @@ export default function Home() {
         />
       </motion.div>
 
+      {/* პროცენტული */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
