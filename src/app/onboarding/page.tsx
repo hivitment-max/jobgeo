@@ -112,8 +112,11 @@ export default function OnboardingPage() {
 
       {/* ფოტო - გადიდებული */}
       <div 
-        className="flex-shrink-0 flex items-center justify-center pt-16 pb-4"
-        style={{ marginTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 16px)' }}
+        className="flex-shrink-0 flex items-center justify-center py-2"
+        style={{ 
+          marginTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 16px)',
+          height: '260px'
+        }}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -128,16 +131,16 @@ export default function OnboardingPage() {
               src={slide.image}
               alt={`Onboarding ${current + 1}`}
               className="object-contain"
-              style={{ maxHeight: '220px', width: 'auto' }}
+              style={{ maxHeight: '260px', width: 'auto' }}
             />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Frosted Glass ბანერი */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-6 bg-white/95 backdrop-blur-2xl border-t border-gray-200/50">
+      {/* Frosted Glass ბანერი - დარჩენილი ადგილი */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 bg-white/95 backdrop-blur-2xl border-t border-gray-200/50">
         {/* პროგრესის წერტილები */}
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2 mb-3">
           {slides.map((_, i) => (
             <motion.div
               key={i}
@@ -158,7 +161,7 @@ export default function OnboardingPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="text-3xl font-bold text-center text-gray-900 mb-3 leading-tight"
+            className="text-3xl font-bold text-center text-gray-900 mb-2 leading-tight"
           >
             {slide.title && <span>{slide.title} </span>}
             {slide.highlight && (
@@ -178,19 +181,21 @@ export default function OnboardingPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="text-base text-center text-gray-600 mb-6 max-w-sm leading-relaxed px-4"
+            className="text-base text-center text-gray-600 mb-5 max-w-sm leading-relaxed px-4"
           >
             {slide.description}
           </motion.p>
         </AnimatePresence>
 
-        {/* ღილაკი */}
-        <button
-          onClick={handleNext}
-          className="w-full max-w-sm bg-gray-900 text-white rounded-2xl py-4 font-semibold text-base hover:bg-gray-800 transition-colors active:scale-95"
-        >
-          {isLast ? 'დაწყება' : 'შემდეგი'}
-        </button>
+        {/* ღილაკი - დაცული ქვედა padding-ით */}
+        <div className="w-full max-w-sm px-4 pb-10">
+          <button
+            onClick={handleNext}
+            className="w-full bg-gray-900 text-white rounded-2xl py-4 font-semibold text-base hover:bg-gray-800 transition-colors active:scale-95"
+          >
+            {isLast ? 'დაწყება' : 'შემდეგი'}
+          </button>
+        </div>
       </div>
     </div>
   );
