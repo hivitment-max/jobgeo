@@ -10,6 +10,13 @@ export interface Job {
     tags: { label: string; color: string }[];
     featured?: boolean;
     recommended?: boolean;
+    // ახალი ველები დეტალური გვერდისთვის
+    description?: string;
+    requirements?: string[];
+    about?: string;
+    postedDate?: string;
+    jobType?: string;
+    experienceLevel?: string;
   }
   
   export const featuredJobs: Job[] = [
@@ -27,6 +34,20 @@ export interface Job {
         { label: 'Junior', color: 'bg-white/20' },
       ],
       featured: true,
+      description: 'ვეძებთ კრეატიულ Product Designer-ს, რომელიც შეუერთდება ჩვენს გუნდს და შექმნის მომხმარებელზე ორიენტირებულ დიზაინებს. იმუშავებ პროდუქტის დიზაინზე ნულიდან, შექმნი wireframe-ებს, prototyp-ებს და საბოლოო ვიზუალურ დიზაინს.',
+      requirements: [
+        'ბაკალავრის ხარისხი დიზაინში, კომპიუტერულ მეცნიერებაში ან მსგავს სფეროში.',
+        '3 წელი შესაბამისი ინდუსტრიის გამოცდილება.',
+        'უნარი შექმნას პროდუქტები ნულიდან და გააუმჯობესოს ფუნქციები.',
+        'კომუნიკაციის და გავლენის მოხდენის უნარი პროდუქტის დიზაინის სტრატეგიაზე.',
+        'პრობლემების გადაჭრის შესანიშნავი უნარები.',
+        'გამოცდილება რამდენიმე პლატფორმაზე დიზაინში.',
+        'პორტფოლიო რამდენიმე პროექტით.',
+      ],
+      about: 'Google არის მსოფლიოში წამყვანი ტექნოლოგიური კომპანია, რომელიც ქმნის ინოვაციურ პროდუქტებს მილიარდობით ადამიანისთვის. ჩვენი მისიაა ინფორმაციის ორგანიზება და მსოფლიოს მასშტაბით ხელმისაწვდომი და სასარგებლო გახდეს.',
+      postedDate: '2 დღის წინ',
+      jobType: 'Full-Time',
+      experienceLevel: 'Junior',
     },
     {
       id: '2',
@@ -42,6 +63,19 @@ export interface Job {
         { label: 'Middle', color: 'bg-white/20' },
       ],
       featured: true,
+      description: 'ვეძებთ გამოცდილ Frontend Developer-ს React და TypeScript-ში. იმუშავებ ჩვენს ძირითად პროდუქტზე და შექმნი მაღალი ხარისხის, მასშტაბირებად ვებ აპლიკაციებს.',
+      requirements: [
+        '3+ წელი გამოცდილება React-ში და TypeScript-ში.',
+        'კარგი ცოდნა HTML5, CSS3 და JavaScript-ში.',
+        'გამოცდილება state management-ში (Redux, Zustand).',
+        'REST API და GraphQL-თან მუშაობის გამოცდილება.',
+        'Git-თან მუშაობის უნარი.',
+        'ინგლისური ენის B2+ დონე.',
+      ],
+      about: 'Microsoft არის გლობალური ტექნოლოგიური კორპორაცია, რომელიც აწარმოებს პროგრამულ უზრუნველყოფას, ელექტრონიკას და პერსონალურ კომპიუტერებს. ჩვენი მისიაა ყველა ადამიანისა და ორგანიზაციის გაძლიერება.',
+      postedDate: '5 დღის წინ',
+      jobType: 'Full-Time',
+      experienceLevel: 'Middle',
     },
     {
       id: '3',
@@ -57,6 +91,18 @@ export interface Job {
         { label: 'Senior', color: 'bg-white/20' },
       ],
       featured: true,
+      description: 'ვეძებთ Senior Marketing Manager-ს, რომელიც ხელმძღვანელობს მარკეტინგულ სტრატეგიებს და კამპანიებს. იმუშავებ ბრენდის პოზიციონირებაზე და მომხმარებლის მოზიდვაზე.',
+      requirements: [
+        '5+ წელი გამოცდილება მარკეტინგში.',
+        'გამოცდილება digital marketing-ში (SEO, SEM, Social Media).',
+        'ანალიტიკური აზროვნება და მონაცემებზე დაფუძნებული გადაწყვეტილებები.',
+        'გუნდის მართვის უნარი.',
+        'კრეატიული აზროვნება და ინოვაციური მიდგომები.',
+      ],
+      about: 'Apple არის ამერიკული მრავალეროვნული ტექნოლოგიური კომპანია, რომელიც აპროექტებს, აწარმოებს და ყიდის ელექტრონიკას, პროგრამულ უზრუნველყოფას და ონლაინ სერვისებს.',
+      postedDate: '1 კვირის წინ',
+      jobType: 'Full-Time',
+      experienceLevel: 'Senior',
     },
   ];
   
@@ -72,6 +118,16 @@ export interface Job {
       salary: '2500-4000 ₾',
       tags: [],
       recommended: true,
+      description: 'UX Designer-ის პოზიცია Dribbble-ში. შექმნი მომხმარებლის გამოცდილებას ვებ და მობილურ აპლიკაციებისთვის.',
+      requirements: [
+        '2+ წელი UX დიზაინში.',
+        'Figma-სა და Adobe XD-ს ცოდნა.',
+        'User research-ის გამოცდილება.',
+      ],
+      about: 'Dribbble არის დიზაინერების საზოგადოება, სადაც ისინი აზიარებენ თავიანთ ნამუშევრებს.',
+      postedDate: '3 დღის წინ',
+      jobType: 'Full-Time',
+      experienceLevel: 'Middle',
     },
     {
       id: '5',
@@ -84,6 +140,16 @@ export interface Job {
       salary: '6000-9000 ₾',
       tags: [],
       recommended: true,
+      description: 'Senior Engineer-ის პოზიცია Facebook-ში. იმუშავებ მასშტაბურ სისტემებზე.',
+      requirements: [
+        '5+ წელი გამოცდილება.',
+        'System design-ის ცოდნა.',
+        'ლიდერობის უნარი.',
+      ],
+      about: 'Facebook (Meta) არის სოციალური მედიის გიგანტი, რომელიც აკავშირებს მილიარდობით ადამიანს.',
+      postedDate: '1 დღის წინ',
+      jobType: 'Full-Time',
+      experienceLevel: 'Senior',
     },
     {
       id: '6',
@@ -96,6 +162,16 @@ export interface Job {
       salary: '3000-5000 ₾',
       tags: [],
       recommended: true,
+      description: 'Data Analyst-ის პოზიცია Amazon-ში. აანალიზებ მონაცემებს და ქმნი რეპორტებს.',
+      requirements: [
+        'SQL-ის ძლიერი ცოდნა.',
+        'Python ან R-ის ცოდნა.',
+        'Data visualization-ის გამოცდილება.',
+      ],
+      about: 'Amazon არის მსოფლიოს უდიდესი ონლაინ რითეილერი და cloud computing კომპანია.',
+      postedDate: '4 დღის წინ',
+      jobType: 'Full-Time',
+      experienceLevel: 'Middle',
     },
     {
       id: '7',
@@ -108,6 +184,16 @@ export interface Job {
       salary: '2000-3500 ₾',
       tags: [],
       recommended: true,
+      description: 'HR Specialist-ის პოზიცია Tesla-ში. მართავ რეკრუტინგს და თანამშრომელთა ურთიერთობებს.',
+      requirements: [
+        '2+ წელი HR-ში.',
+        'კომუნიკაციის შესანიშნავი უნარი.',
+        'შრომითი კანონმდებლობის ცოდნა.',
+      ],
+      about: 'Tesla არის ელექტრო მანქანების და სუფთა ენერგიის კომპანია, რომელიც ცვლის მსოფლიოს.',
+      postedDate: '6 დღის წინ',
+      jobType: 'Full-Time',
+      experienceLevel: 'Junior',
     },
     {
       id: '8',
@@ -120,6 +206,16 @@ export interface Job {
       salary: '4500-7000 ₾',
       tags: [],
       recommended: true,
+      description: 'Product Manager-ის პოზიცია Spotify-ში. ხელმძღვანელობ პროდუქტის განვითარებას.',
+      requirements: [
+        '4+ წელი Product Management-ში.',
+        'Agile/Scrum მეთოდოლოგიის ცოდნა.',
+        'ანალიტიკური აზროვნება.',
+      ],
+      about: 'Spotify არის მუსიკალური სტრიმინგის სერვისი, რომელიც აერთიანებს მილიონობით სიმღერას.',
+      postedDate: '2 დღის წინ',
+      jobType: 'Full-Time',
+      experienceLevel: 'Senior',
     },
     {
       id: '9',
@@ -132,5 +228,15 @@ export interface Job {
       salary: '5000-8000 ₾',
       tags: [],
       recommended: true,
+      description: 'DevOps Engineer-ის პოზიცია Netflix-ში. მართავ ინფრასტრუქტურას და CI/CD პაიპლაინებს.',
+      requirements: [
+        '3+ წელი DevOps-ში.',
+        'AWS/GCP-ის ცოდნა.',
+        'Docker და Kubernetes-ის გამოცდილება.',
+      ],
+      about: 'Netflix არის მსოფლიოს წამყვანი სტრიმინგ სერვისი, რომელიც ემსახურება 200+ მილიონ abonnent-ს.',
+      postedDate: '1 კვირის წინ',
+      jobType: 'Full-Time',
+      experienceLevel: 'Middle',
     },
   ];
