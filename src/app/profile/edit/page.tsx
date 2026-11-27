@@ -13,13 +13,19 @@ const cities = [
 ];
 
 const experienceLevels = [
-  { value: 'Junior', label: 'Junior (0-2 წელი)' },
-  { value: 'Middle', label: 'Middle (2-5 წელი)' },
-  { value: 'Senior', label: 'Senior (5-8 წელი)' },
-  { value: 'Lead', label: 'Lead/Manager (8+ წელი)' },
+  { value: 'Junior', label: '0-2 წელი' },
+  { value: 'Middle', label: '2-5 წელი' },
+  { value: 'Senior', label: '5-8 წელი' },
+  { value: 'Lead', label: '8+ წელი' },
 ];
 
-const languageLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'მშობლიური'];
+const jobTypes = [
+  { value: 'full-time', label: 'სრული განაკვეთი' },
+  { value: 'part-time', label: 'ნახევარი განაკვეთი' },
+  { value: 'remote', label: 'დისტანციური' },
+  { value: 'freelance', label: 'ფრილანსი' },
+  { value: 'contract', label: 'კონტრაქტი' },
+];
 
 interface Profile {
   firstName: string;
@@ -31,12 +37,8 @@ interface Profile {
   salaryExpectation: string;
   city: string;
   education: string;
+  jobType: string;
   bio: string;
-  skills: string[];
-  languages: { name: string; level: string }[];
-  portfolioUrl: string;
-  linkedinUrl: string;
-  githubUrl: string;
 }
 
 export default function ProfileEditPage() {
@@ -51,21 +53,13 @@ export default function ProfileEditPage() {
     salaryExpectation: '',
     city: '',
     education: '',
+    jobType: '',
     bio: '',
-    skills: [],
-    languages: [],
-    portfolioUrl: '',
-    linkedinUrl: '',
-    githubUrl: '',
   });
-  const [skillInput, setSkillInput] = useState('');
-  const [languageName, setLanguageName] = useState('');
-  const [languageLevel, setLanguageLevel] = useState('B1');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [cvMessage, setCvMessage] = useState(false);
-  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -81,9 +75,6 @@ export default function ProfileEditPage() {
         }
         tg.setHeaderColor('#ffffff');
         tg.setBackgroundColor('#F9FAFB');
-        
-        const savedUser = localStorage.getItem('jobsnap_telegram_user');
-        if (savedUser) setUser(JSON.parse(savedUser));
 
         const telegramUser = tg.initDataUnsafe?.user;
         if (telegramUser) {
@@ -131,12 +122,8 @@ export default function ProfileEditPage() {
           salaryExpectation: profileData.salary_expectation || '',
           city: profileData.city || '',
           education: profileData.education || '',
+          jobType: profileData.job_type || '',
           bio: profileData.bio || '',
-          skills: profileData.skills || [],
-          languages: profileData.languages || [],
-          portfolioUrl: profileData.portfolio_url || '',
-          linkedinUrl: profileData.linkedin_url || '',
-          githubUrl: profileData.github_url || '',
         });
       }
     } catch (error) {
@@ -148,32 +135,6 @@ export default function ProfileEditPage() {
     setProfile((prev) => ({ ...prev, ...updates }));
   };
 
-  const addSkill = () => {
-    if (skillInput.trim() && !profile.skills.includes(skillInput.trim())) {
-      updateProfile({ skills: [...profile.skills, skillInput.trim()] });
-      setSkillInput('');
-    }
-  };
-
-  const removeSkill = (skill: string) => {
-    updateProfile({ skills: profile.skills.filter((s) => s !== skill) });
-  };
-
-  const addLanguage = () => {
-    if (languageName.trim()) {
-      updateProfile({
-        languages: [...profile.languages, { name: languageName.trim(), level: languageLevel }],
-      });
-      setLanguageName('');
-    }
-  };
-
-  const removeLanguage = (index: number) => {
-    updateProfile({
-      languages: profile.languages.filter((_, i) => i !== index),
-    });
-  };
-
   const calculateCompletionScore = () => {
     const fields = [
       profile.firstName,
@@ -183,8 +144,6 @@ export default function ProfileEditPage() {
       profile.profession,
       profile.experience,
       profile.city,
-      profile.skills.length > 0,
-      profile.languages.length > 0,
     ];
     const filled = fields.filter(Boolean).length;
     return Math.round((filled / fields.length) * 100);
@@ -212,12 +171,8 @@ export default function ProfileEditPage() {
           salary_expectation: profile.salaryExpectation || null,
           city: profile.city,
           education: profile.education || null,
+          job_type: profile.jobType || null,
           bio: profile.bio || null,
-          skills: profile.skills,
-          languages: profile.languages,
-          portfolio_url: profile.portfolioUrl || null,
-          linkedin_url: profile.linkedinUrl || null,
-          github_url: profile.githubUrl || null,
           completion_score: calculateCompletionScore(),
         });
 
@@ -255,9 +210,9 @@ export default function ProfileEditPage() {
         <span className="text-sm font-bold text-gray-900 whitespace-nowrap">JOBSNAP</span>
       </div>
 
-      {/* Header - კომპაქტური */}
+      {/* Header */}
       <div 
-        className="px-6 pt-4 pb-3 bg-white"
+        className="px-5 pt-4 pb-3 bg-white"
         style={{ 
           paddingTop: 'calc(var(--tg-content-safe-area-inset-top, 56px) + var(--tg-safe-area-inset-top, 0px) + 20px)'
         }}
@@ -270,7 +225,7 @@ export default function ProfileEditPage() {
             <ArrowLeft className="w-4 h-4 text-gray-900" />
           </button>
           
-          <h1 className="text-base font-bold text-gray-900">პროფილის რედაქტირება</h1>
+          <h1 className="text-base font-bold text-gray-900 whitespace-nowrap">პროფილი</h1>
           
           <button
             onClick={handleSave}
@@ -287,7 +242,7 @@ export default function ProfileEditPage() {
           </button>
         </div>
 
-        {/* Completion Score - კომპაქტური */}
+        {/* Completion Score */}
         <div className="flex items-center gap-3">
           <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
             <motion.div
@@ -301,7 +256,7 @@ export default function ProfileEditPage() {
         </div>
       </div>
 
-      {/* Form - კომპაქტური */}
+      {/* Form */}
       <div className="px-4 py-3 space-y-4">
         
         {/* პირადი ინფორმაცია */}
@@ -369,14 +324,14 @@ export default function ProfileEditPage() {
                 type="text"
                 value={profile.profession}
                 onChange={(e) => updateProfile({ profession: e.target.value })}
-                placeholder="Frontend Developer"
+                placeholder="მაგ: მძღოლი, მზარეული, დიზაინერი..."
                 className="w-full bg-gray-50 rounded-lg px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-2.5">
               <div>
-                <label className="text-[10px] font-medium text-gray-600 mb-1 block">გამოცდილება</label>
+                <label className="text-[10px] font-medium text-gray-600 mb-1 block">გამოცდილება *</label>
                 <select
                   value={profile.experience}
                   onChange={(e) => updateProfile({ experience: e.target.value })}
@@ -409,12 +364,28 @@ export default function ProfileEditPage() {
             </div>
 
             <div>
+              <label className="text-[10px] font-medium text-gray-600 mb-1 block">სამუშაოს ტიპი</label>
+              <select
+                value={profile.jobType}
+                onChange={(e) => updateProfile({ jobType: e.target.value })}
+                className="w-full bg-gray-50 rounded-lg px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
+              >
+                <option value="">აირჩიე</option>
+                {jobTypes.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
               <label className="text-[10px] font-medium text-gray-600 mb-1 block">ხელფასის მოლოდინი (₾)</label>
               <input
                 type="text"
                 value={profile.salaryExpectation}
                 onChange={(e) => updateProfile({ salaryExpectation: e.target.value })}
-                placeholder="მაგ: 3000-5000"
+                placeholder="მაგ: 1500-2500"
                 className="w-full bg-gray-50 rounded-lg px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
               />
             </div>
@@ -425,128 +396,30 @@ export default function ProfileEditPage() {
                 type="text"
                 value={profile.education}
                 onChange={(e) => updateProfile({ education: e.target.value })}
-                placeholder="ბაკალავრი კომპიუტერულ მეცნიერებაში"
+                placeholder="მაგ: საშუალო, ბაკალავრი..."
                 className="w-full bg-gray-50 rounded-lg px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
               />
             </div>
           </div>
         </section>
 
-        {/* უნარები */}
+        {/* მოკლე ბიო */}
         <section>
           <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 px-1">
-            უნარები (Skills)
+            შენს შესახებ
           </h2>
           <div className="bg-white rounded-2xl p-3 shadow-sm">
-            <div className="flex gap-2 mb-2">
-              <input
-                type="text"
-                value={skillInput}
-                onChange={(e) => setSkillInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addSkill();
-                  }
-                }}
-                placeholder="მაგ: React, TypeScript..."
-                className="flex-1 bg-gray-50 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
-              />
-              <button
-                onClick={addSkill}
-                className="px-3 py-2 bg-emerald-500 text-white rounded-lg text-xs font-medium hover:bg-emerald-600 transition-colors"
-              >
-                +
-              </button>
-            </div>
-
-            {profile.skills.length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
-                {profile.skills.map((skill) => (
-                  <motion.span
-                    key={skill}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-medium"
-                  >
-                    {skill}
-                    <button
-                      onClick={() => removeSkill(skill)}
-                      className="w-3.5 h-3.5 rounded-full bg-emerald-200 flex items-center justify-center hover:bg-emerald-300 text-[10px]"
-                    >
-                      ×
-                    </button>
-                  </motion.span>
-                ))}
-              </div>
-            )}
-
-            {profile.skills.length === 0 && (
-              <p className="text-[10px] text-gray-400 text-center py-1.5">
-                დაამატე უნარები Enter-ით ან + ღილაკით
-              </p>
-            )}
-          </div>
-        </section>
-
-        {/* ენები */}
-        <section>
-          <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 px-1">
-            ენები
-          </h2>
-          <div className="bg-white rounded-2xl p-3 shadow-sm">
-            <div className="flex gap-2 mb-2">
-              <input
-                type="text"
-                value={languageName}
-                onChange={(e) => setLanguageName(e.target.value)}
-                placeholder="ენა (მაგ: ინგლისური)"
-                className="flex-1 bg-gray-50 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
-              />
-              <select
-                value={languageLevel}
-                onChange={(e) => setLanguageLevel(e.target.value)}
-                className="bg-gray-50 rounded-lg px-2 py-2 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
-              >
-                {languageLevels.map((level) => (
-                  <option key={level} value={level}>
-                    {level}
-                  </option>
-                ))}
-              </select>
-              <button
-                onClick={addLanguage}
-                className="px-3 py-2 bg-emerald-500 text-white rounded-lg text-xs font-medium hover:bg-emerald-600 transition-colors"
-              >
-                +
-              </button>
-            </div>
-
-            {profile.languages.length > 0 && (
-              <div className="space-y-1.5">
-                {profile.languages.map((lang, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-medium text-gray-900">{lang.name}</span>
-                      <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full">
-                        {lang.level}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => removeLanguage(i)}
-                      className="text-gray-400 hover:text-red-500 text-sm"
-                    >
-                      ×
-                    </button>
-                  </motion.div>
-                ))}
-              </div>
-            )}
+            <textarea
+              value={profile.bio}
+              onChange={(e) => updateProfile({ bio: e.target.value })}
+              placeholder="მოკლედ აღწერე საკუთარი თავი, გამოცდილება და რას ეძებ..."
+              rows={3}
+              maxLength={300}
+              className="w-full bg-gray-50 rounded-lg px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200 resize-none"
+            />
+            <p className="text-[10px] text-gray-400 mt-1 text-right">
+              {profile.bio.length}/300
+            </p>
           </div>
         </section>
 
@@ -593,62 +466,6 @@ export default function ProfileEditPage() {
                 </div>
               </motion.div>
             )}
-          </div>
-        </section>
-
-        {/* დამატებითი */}
-        <section>
-          <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 px-1">
-            დამატებითი (ოფციონალური)
-          </h2>
-          <div className="bg-white rounded-2xl p-3 space-y-2.5 shadow-sm">
-            <div>
-              <label className="text-[10px] font-medium text-gray-600 mb-1 block">მოკლე ბიო</label>
-              <textarea
-                value={profile.bio}
-                onChange={(e) => updateProfile({ bio: e.target.value })}
-                placeholder="რამდენიმე წინადადება შენს შესახებ..."
-                rows={2}
-                maxLength={200}
-                className="w-full bg-gray-50 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200 resize-none"
-              />
-              <p className="text-[10px] text-gray-400 mt-0.5 text-right">
-                {profile.bio.length}/200
-              </p>
-            </div>
-
-            <div>
-              <label className="text-[10px] font-medium text-gray-600 mb-1 block">Portfolio URL</label>
-              <input
-                type="url"
-                value={profile.portfolioUrl}
-                onChange={(e) => updateProfile({ portfolioUrl: e.target.value })}
-                placeholder="https://..."
-                className="w-full bg-gray-50 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
-              />
-            </div>
-
-            <div>
-              <label className="text-[10px] font-medium text-gray-600 mb-1 block">LinkedIn</label>
-              <input
-                type="url"
-                value={profile.linkedinUrl}
-                onChange={(e) => updateProfile({ linkedinUrl: e.target.value })}
-                placeholder="https://linkedin.com/in/..."
-                className="w-full bg-gray-50 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
-              />
-            </div>
-
-            <div>
-              <label className="text-[10px] font-medium text-gray-600 mb-1 block">GitHub</label>
-              <input
-                type="url"
-                value={profile.githubUrl}
-                onChange={(e) => updateProfile({ githubUrl: e.target.value })}
-                placeholder="https://github.com/..."
-                className="w-full bg-gray-50 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border border-gray-200"
-              />
-            </div>
           </div>
         </section>
 
